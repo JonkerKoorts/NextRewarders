@@ -18,9 +18,9 @@ export default function Home() {
       <main className="bg-color-2 min-h-screen flex flex-col items-center justify-center">
         <div className="text-center">
           <p className="font-thin">Welcome to</p>
-          <h1 className="text-3xl font-bold mb-4 text-main">Rewarders</h1>
+          <h1 className="text-3xl font-bold mb-4 text-main">Welcome to</h1>
         </div>
-        <Image src={Logo} className="mt-[-25px]" />
+        <Image src={Logo} className="mt-[-25px] w-3/5" />
         <Link
           href="../login_register"
           className="bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded"
