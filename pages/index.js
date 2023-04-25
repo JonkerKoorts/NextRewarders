@@ -1,7 +1,5 @@
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "@next/font/google";
-import styles from "@/styles/Home.module.css";
 import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,9 +13,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
-        <Link href="../login_register">Let us go</Link>
+      <main className="bg-color-2 min-h-screen flex flex-col items-center justify-center">
+        <h1 className="text-3xl font-bold mb-4">Hello world!</h1>
+        <Link
+          href="../login_register"
+          className="bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded"
+        >
+          Login || Register
+        </Link>
       </main>
     </>
   );

@@ -3,7 +3,6 @@ import Parse from "../../utils/parse.js";
 import { useRouter } from "next/router";
 
 const LoginRegister = () => {
-  const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,7 +21,6 @@ const LoginRegister = () => {
 
         newUser.set("username", number);
         newUser.set("password", password);
-        newUser.set("name", name);
         newUser.set("phone", number);
 
         try {
@@ -39,36 +37,41 @@ const LoginRegister = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
+    <div className="bg-color-2 min-h-screen flex flex-col items-center justify-center p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded shadow-md w-full max-w-md"
+      >
+        <div className="mb-4">
+          <label htmlFor="number" className="block text-sm font-medium mb-2">
+            Number:
+          </label>
           <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Number:
-          <input
+            id="number"
             type="tel"
             value={number}
             onChange={(e) => setNumber(e.target.value)}
+            className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
           />
-        </label>
-        <br />
-        <label>
-          Password:
+        </div>
+        <div className="mb-4">
+          <label htmlFor="password" className="block text-sm font-medium mb-2">
+            Password:
+          </label>
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
           />
-        </label>
-        <br />
-        <button type="submit">Submit</button>
+        </div>
+        <button
+          type="submit"
+          className="bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded"
+        >
+          Submit
+        </button>
       </form>
     </div>
   );
