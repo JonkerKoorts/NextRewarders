@@ -17,10 +17,14 @@ export default function Home() {
       </Head>
       <main className="bg-color-2 min-h-screen flex flex-col items-center justify-center">
         <div className="text-center">
-          <p className="font-thin">Welcome to</p>
-          <h1 className="text-3xl font-bold mb-4 text-main">Welcome to</h1>
+          <p className="font-normal">Welcome to the</p>
+          <h1 className="text-3xl font-bold mb-4 text-main">ONLY</h1>
         </div>
         <Image src={Logo} className="mt-[-25px] w-3/5" />
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-4 text-main">App</h1>
+          <p className="font-normal mb-[35px] mt-[-10px]">You will ever need</p>
+        </div>
         <Link
           href="../login_register"
           className="bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded"
