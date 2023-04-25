@@ -9,8 +9,12 @@ const HomePage = () => {
   useEffect(() => {
     const checkUserName = async () => {
       const user = await Parse.User.currentAsync();
-      if (user && !user.get("name")) {
-        setShowNamePopup(true);
+      if (user) {
+        if (user.get("name")) {
+          setName(user.get("name")); // Add this line to update the name state
+        } else {
+          setShowNamePopup(true);
+        }
       }
     };
 

@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 const LoginRegister = () => {
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [snackbar, setSnackbar] = useState({ open: false, message: "" });
 
   const router = useRouter();
 
@@ -29,11 +30,29 @@ const LoginRegister = () => {
           router.push("/home");
         } catch (signUpError) {
           console.error("Error signing up:", signUpError);
+          showSnackbar("Error signing up. Please try again.");
         }
+      } else if (
+        error.code === Parse.Error.USERNAME_MISSING ||
+        error.code === Parse.Error.PASSWORD_MISSING
+      ) {
+        showSnackbar("Number and password are required.");
+      } else if (error.code === Parse.Error.USERNAME_TAKEN) {
+        showSnackbar("This number is already in use.");
+      } else if (error.code === Parse.Error.INVALID_SESSION_TOKEN) {
+        showSnackbar("Invalid session. Please try again.");
       } else {
         console.error("Error logging in:", error);
+        showSnackbar("Error logging in. Please try again.");
       }
     }
+  };
+
+  const showSnackbar = (message) => {
+    setSnackbar({ open: true, message });
+    setTimeout(() => {
+      setSnackbar({ open: false, message: "" });
+    }, 3000);
   };
 
   return (
@@ -73,6 +92,13 @@ const LoginRegister = () => {
           Submit
         </button>
       </form>
+      <div
+        className={`fixed bottom-0 right-0 m-4 p-4 rounded shadow-md ${
+          snackbar.open ? "bg-red-500" : "hidden"
+        }`}
+      >
+        {snackbar.message}
+      </div>
     </div>
   );
 };
