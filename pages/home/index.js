@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import withAuth from "../../hoc/withAuth.js";
 import Parse from "../../utils/parse.js";
+import { motion } from "framer-motion";
 
 const HomePage = () => {
   const [showNamePopup, setShowNamePopup] = useState(false);
@@ -43,7 +44,18 @@ const HomePage = () => {
         </div>
       )}
       {showNamePopup && (
-        <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
+        <motion.div
+          initial={{ y: "-100vh" }}
+          animate={{ y: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 10,
+            mass: 2,
+            restDelta: 0.5,
+          }}
+          className="bg-white p-6 rounded shadow-md w-full max-w-md"
+        >
           <div className="mb-4 text-sm font-medium">
             Please enter your name:
           </div>
@@ -59,7 +71,7 @@ const HomePage = () => {
           >
             Save
           </button>
-        </div>
+        </motion.div>
       )}
     </div>
   );

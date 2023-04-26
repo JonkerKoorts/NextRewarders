@@ -20,7 +20,7 @@ export default function Home() {
           <p className="font-normal">Welcome to the</p>
           <h1 className="text-3xl font-bold mb-4 text-main">ONLY</h1>
         </div>
-        <Image src={Logo} className="mt-[-25px] w-3/5" />
+        <Image src={Logo} className="mt-[-25px] w-1/2 sm:w-1/4" />
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4 text-main">App</h1>
           <p className="font-normal mb-[35px] mt-[-10px]">You will ever need</p>

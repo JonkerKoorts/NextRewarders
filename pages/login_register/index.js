@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Parse from "../../utils/parse.js";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 
 const LoginRegister = () => {
   const [number, setNumber] = useState("");
@@ -57,48 +58,64 @@ const LoginRegister = () => {
 
   return (
     <div className="bg-color-2 min-h-screen flex flex-col items-center justify-center p-6">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md w-full max-w-md"
+      <motion.div
+        initial={{ y: "-100vh" }}
+        animate={{ y: 0 }}
+        transition={{
+          type: "spring",
+          stiffness: 100,
+          damping: 10,
+          mass: 2,
+          restDelta: 0.5,
+        }}
       >
-        <div className="mb-4">
-          <label htmlFor="number" className="block text-sm font-medium mb-2">
-            Number:
-          </label>
-          <input
-            id="number"
-            type="tel"
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
-            className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium mb-2">
-            Password:
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded"
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-6 rounded shadow-md"
+          style={{ width: "350px" }}
         >
-          Submit
-        </button>
-      </form>
-      <div
-        className={`fixed bottom-0 right-0 m-4 p-4 rounded shadow-md ${
-          snackbar.open ? "bg-red-500" : "hidden"
-        }`}
-      >
-        {snackbar.message}
-      </div>
+          <div className="mb-4">
+            <label htmlFor="number" className="block text-sm font-medium mb-2">
+              Number:
+            </label>
+            <input
+              id="number"
+              type="tel"
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium mb-2"
+            >
+              Password:
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded"
+          >
+            Submit
+          </button>
+        </form>
+        <div
+          className={`fixed bottom-0 right-0 m-4 p-4 rounded shadow-md ${
+            snackbar.open ? "bg-red-500" : "hidden"
+          }`}
+        >
+          {snackbar.message}
+        </div>
+      </motion.div>
     </div>
   );
 };
