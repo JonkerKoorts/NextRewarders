@@ -12,6 +12,7 @@ const HomePage = () => {
   const [name, setName] = useState("");
   const [isNewUser, setIsNewUser] = useState(false);
   const [stores, setStores] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkUserName = async () => {
@@ -30,6 +31,7 @@ const HomePage = () => {
     const fetchAndSetStores = async () => {
       const fetchedStores = await fetchStores();
       setStores(fetchedStores);
+      setIsLoading(false);
     };
 
     checkUserName();
@@ -47,7 +49,10 @@ const HomePage = () => {
 
   return (
     <div className="bg-color-2 min-h-screen flex flex-col items-center justify-center p-6">
-      {!showNamePopup && name && (
+      {isLoading && (
+        <div className="w-16 h-16 border-t-2 border-b-2 border-main rounded-full animate-spin"></div>
+      )}
+      {!isLoading && !showNamePopup && name && (
         <>
           <div className="mb-4 text-xl font-bold flex text-center">
             <p>
