@@ -8,12 +8,22 @@ const Stores = ({ stores }) => {
         <div key={store.objectId} className="w-full">
           <Link
             href={store.route}
-            className="bg-white p-4 shadow-md flex justify-center text-center flex-col rounded-md"
+            className="bg-white p-4 shadow-md flex flex-col justify-between items-stretch rounded-md h-full relative"
           >
-            <p className="mb-2 font-bold">{store.name}</p>
-            <p className="font-thin" style={{ fontSize: "10px" }}>
-              {store.description}
-            </p>
+            <div className="flex flex-col items-start">
+              <p className="mb-2 font-bold text-lg">{store.name}</p>
+              <p className="font-thin text-main text-sm mt-[-10px]">
+                {store.description}
+              </p>
+            </div>
+            <div className="absolute bottom-0 right-0 p-4 text-sm">
+              <p>
+                Current rewards:{" "}
+                <span className="text-lg" style={{ color: "#FFC000" }}>
+                  0
+                </span>
+              </p>
+            </div>
           </Link>
         </div>
       ))}
