@@ -14,6 +14,7 @@ const LoginRegister = () => {
     e.preventDefault();
 
     try {
+      Parse.User._clearCache(); // Add this line
       let user = await Parse.User.logIn(number, password);
       console.log("User logged in:", user);
       router.push("/home");

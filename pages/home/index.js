@@ -1,25 +1,39 @@
 import React, { useState, useEffect } from "react";
 import withAuth from "../../hoc/withAuth.js";
 import Parse from "../../utils/parse.js";
+import { fetchStores } from "../../utils/parse.js";
 import { motion } from "framer-motion";
+import Image from "next/image.js";
+import Link from "next/link.js";
+import Stores from "@/components/stores.js";
 
 const HomePage = () => {
   const [showNamePopup, setShowNamePopup] = useState(false);
   const [name, setName] = useState("");
+  const [isNewUser, setIsNewUser] = useState(false);
+  const [stores, setStores] = useState([]);
 
   useEffect(() => {
     const checkUserName = async () => {
       const user = await Parse.User.currentAsync();
       if (user) {
         if (user.get("name")) {
-          setName(user.get("name")); // Add this line to update the name state
+          setName(user.get("name"));
+          setIsNewUser(false);
         } else {
           setShowNamePopup(true);
+          setIsNewUser(true);
         }
       }
     };
 
+    const fetchAndSetStores = async () => {
+      const fetchedStores = await fetchStores();
+      setStores(fetchedStores);
+    };
+
     checkUserName();
+    fetchAndSetStores();
   }, []);
 
   const updateUserName = async (name) => {
@@ -34,14 +48,20 @@ const HomePage = () => {
   return (
     <div className="bg-color-2 min-h-screen flex flex-col items-center justify-center p-6">
       {!showNamePopup && name && (
-        <div className="mb-4 text-xl font-bold flex text-center">
-          <p>
-            Hello
-            <span className="text-main"> {name}</span>
-            <br />
-            Welcome to Rewarders
-          </p>
-        </div>
+        <>
+          <div className="mb-4 text-xl font-bold flex text-center">
+            <p>
+              Hello
+              <span className="text-main"> {name}</span>
+              <br />
+              {isNewUser ? "Welcome to Rewarders" : "Welcome back"}
+            </p>
+          </div>
+          <div className="mb-4 text-lg font-semibold">
+            {isNewUser ? "Browse Stores:" : "Stores:"}
+          </div>
+          <Stores stores={stores} />
+        </>
       )}
       {showNamePopup && (
         <motion.div
