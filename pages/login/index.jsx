@@ -8,11 +8,13 @@ const LoginRegister = () => {
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [snackbar, setSnackbar] = useState({ open: false, message: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     // Add this line to log out any existing sessions
     await Parse.User.logOut();
@@ -119,9 +121,14 @@ const LoginRegister = () => {
           </div>
           <button
             type="submit"
-            className="bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded"
+            className="bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded w-full flex items-center justify-center"
+            disabled={isLoading}
           >
-            Submit
+            {isLoading ? (
+              <div className="w-6 h-6 border-t-2 border-b-2 border-main rounded-full animate-spin"></div>
+            ) : (
+              "Submit"
+            )}
           </button>
         </form>
         <div
@@ -131,12 +138,14 @@ const LoginRegister = () => {
         >
           {snackbar.message}
         </div>
-        <Link
-          className="bg-main text-color-2 py-2 px-4 rounded absolute mt-[300px]"
-          href="/"
-        >
-          Back
-        </Link>
+        {isLoading ? null : (
+          <Link
+            className="bg-main text-color-2 py-2 px-4 rounded absolute mt-[300px]"
+            href="/"
+          >
+            Back
+          </Link>
+        )}
       </motion.div>
     </div>
   );
