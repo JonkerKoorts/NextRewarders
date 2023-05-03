@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Parse from "../../utils/parse.js";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const LoginRegister = () => {
   const [number, setNumber] = useState("");
@@ -14,8 +15,9 @@ const LoginRegister = () => {
     e.preventDefault();
 
     try {
-      Parse.User._clearCache(); // Add this line
       let user = await Parse.User.logIn(number, password);
+      const sessionToken = user.getSessionToken();
+      user = await Parse.User.become(sessionToken);
       console.log("User logged in:", user);
       router.push("/home");
     } catch (error) {
@@ -60,10 +62,11 @@ const LoginRegister = () => {
   return (
     <div className="bg-color-2 min-h-screen flex flex-col items-center justify-center p-6">
       <motion.div
+        className="flex justify-center"
         initial={{ y: "-100vh" }}
         animate={{ y: 0 }}
         transition={{
-          type: "spring",
+          type: "just",
           stiffness: 100,
           damping: 10,
           mass: 2,
@@ -82,11 +85,20 @@ const LoginRegister = () => {
             <input
               id="number"
               type="tel"
+              inputMode="numeric"
+              pattern="[0-9]{0,10}"
               value={number}
-              onChange={(e) => setNumber(e.target.value)}
+              onChange={(e) => {
+                const re = /^[0-9\b]+$/; // Regex to match only numbers and backspace key
+                if (e.target.value === "" || re.test(e.target.value)) {
+                  setNumber(e.target.value.slice(0, 10));
+                }
+              }}
               className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
+              required
             />
           </div>
+
           <div className="mb-4">
             <label
               htmlFor="password"
@@ -116,6 +128,12 @@ const LoginRegister = () => {
         >
           {snackbar.message}
         </div>
+        <Link
+          className="bg-main text-color-2 py-2 px-4 rounded absolute mt-[300px]"
+          href="/"
+        >
+          Back
+        </Link>
       </motion.div>
     </div>
   );

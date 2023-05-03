@@ -13,10 +13,10 @@ const withAuth = (WrappedComponent) => {
 
     if (!user) {
       if (ctx.res) {
-        ctx.res.writeHead(302, { Location: "/login_register" });
+        ctx.res.writeHead(302, { Location: "/login" });
         ctx.res.end();
       } else {
-        useRouter().replace("/login_register");
+        useRouter().replace("/login");
       }
     }
 

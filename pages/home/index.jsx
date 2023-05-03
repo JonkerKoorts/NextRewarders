@@ -3,9 +3,7 @@ import withAuth from "../../hoc/withAuth.js";
 import Parse from "../../utils/parse.js";
 import { fetchStores } from "../../utils/parse.js";
 import { motion } from "framer-motion";
-import Image from "next/image.js";
-import Link from "next/link.js";
-import Stores from "@/components/stores.js";
+import Stores from "@/components/stores.jsx";
 
 const HomePage = () => {
   const [showNamePopup, setShowNamePopup] = useState(false);
@@ -73,7 +71,7 @@ const HomePage = () => {
           initial={{ y: "-100vh" }}
           animate={{ y: 0 }}
           transition={{
-            type: "spring",
+            type: "just",
             stiffness: 100,
             damping: 10,
             mass: 2,

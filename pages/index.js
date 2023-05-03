@@ -1,9 +1,35 @@
 import Head from "next/head";
-import Link from "next/link";
 import Image from "next/image";
 import Logo from "../public/logo.png";
+import About from "@/components/About";
+import Navbar from "@/components/Navbar";
+import React, { useRef, useState } from "react";
+import TheTeam from "@/components/TheTeam";
+import Hero from "@/components/Hero";
+import ContactMeBlock from "@/components/ContactMe";
+import Snackbar from "@/components/SnackbarMessage";
 
 export default function Home() {
+  const aboutRef = useRef(null);
+  const teamRef = useRef(null);
+  const contactRef = useRef(null);
+
+  // Add Snackbar state
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  // Function to display the snackbar with a custom message
+  const showSnackbar = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarVisible(true);
+    setTimeout(() => setSnackbarVisible(false), 5000);
+  };
+
+  // Function to handle form submission
+  const handleFormSubmit = () => {
+    showSnackbar("We will be in contact shortly");
+  };
+
   return (
     <>
       <Head>
@@ -12,23 +38,19 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-color-2 min-h-screen flex flex-col items-center justify-center">
-        <div className="text-center">
-          <p className="font-normal">Welcome to the</p>
-          <h1 className="text-3xl font-bold mb-4 text-main">ONLY</h1>
-        </div>
-        <Image alt="Logo" src={Logo} className="mt-[-25px] w-1/2 sm:w-1/4" />
-        <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4 text-main">App</h1>
-          <p className="font-normal mb-[35px] mt-[-10px]">You will ever need</p>
-        </div>
-        <Link
-          href="../login_register"
-          className="bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded"
-        >
-          Login || Register
-        </Link>
+      <Navbar aboutRef={aboutRef} teamRef={teamRef} contactRef={contactRef} />
+      <main>
+        <Hero />
+        <TheTeam ref={teamRef} />
+        <About ref={aboutRef} />
+        <ContactMeBlock ref={contactRef} onSubmit={handleFormSubmit} />
       </main>
+      {snackbarVisible && (
+        <Snackbar
+          message={snackbarMessage}
+          onClose={() => setSnackbarVisible(false)}
+        />
+      )}
     </>
   );
 }
