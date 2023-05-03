@@ -10,7 +10,7 @@ const TheTeam = forwardRef((props, ref) => {
   return (
     <section
       ref={ref}
-      className="flex flex-col justify-center items-center sm:px-20 px-5 py-20"
+      className="flex flex-col justify-center items-center sm:px-20 px-5 py-20 bg-color-2"
     >
       <div>
         <div>
@@ -30,6 +30,9 @@ const TheTeam = forwardRef((props, ref) => {
             alt="Justin"
           />
           <p className="text-main font-bold text-[25px] py-2">Justin</p>
+          <div className="text-[11px] mt-[-10px] text-black pb-10 font-semibold">
+            The CEO and Strategist
+          </div>
           <p>
             Justin, a prodigious planner and system optimization expert,
             consistently dazzles his peers with his innovative ideas and
@@ -50,11 +53,14 @@ const TheTeam = forwardRef((props, ref) => {
             alt="Jonker"
           />
           <p className="text-main font-bold text-[25px] py-2">Jonker</p>
+          <div className="text-[11px] mt-[-10px] text-black pb-10 font-semibold">
+            Also the CEO but the Senior Dev
+          </div>
           <p>
-            Jonker is an exceptionally talented senior developer with a strong
-            mastery of React. His genius-level intellect, combined with his
-            relentless work ethic, has enabled him to contribute significantly
-            to the industry. Not only does Jonker excel at overcoming technical
+            Jonker is an exceptionally talented developer with a strong mastery
+            of React. His genius-level intellect, combined with his relentless
+            work ethic, has enabled him to contribute significantly to the
+            industry. Not only does Jonker excel at overcoming technical
             challenges, but he is also an inspiring team player, always eager to
             help his colleagues and share his wealth of knowledge. His passion
             and commitment to excellence have established him as a truly
@@ -69,6 +75,9 @@ const TheTeam = forwardRef((props, ref) => {
             alt="Kaylee"
           />
           <p className="text-main font-bold text-[25px] py-2">Kaylee</p>
+          <div className="text-[11px] mt-[-10px] text-black pb-10 font-semibold">
+            The Dev but also the student
+          </div>
           <p>
             Kaylee is a passionate and driven up-and-coming developer, whose
             enthusiasm for her craft is contagious. With an insatiable appetite
