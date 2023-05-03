@@ -6,7 +6,7 @@ const About = forwardRef((props, ref) => {
   return (
     <section
       ref={ref}
-      className="sm:px-[55px] px-10 flex flex-col items-center sm:py-20 py-0 pb-10 sm:pb-20 bg-color-2"
+      className="sm:px-[55px] px-10 flex flex-col items-center sm:py-20 py-0 pb-10 sm:pb-20 bg-white"
     >
       <h1 className="font-bold text-4xl">About</h1>
       <div className="text-[11px] mt-[-5px] text-main pb-10">

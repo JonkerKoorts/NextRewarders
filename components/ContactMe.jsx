@@ -17,8 +17,8 @@ const ContactMeBlock = forwardRef(({ onSubmit }, ref) => {
 
   return (
     <section ref={ref} className="bg-color-2 p-8 rounded-lg w-full">
-      <h2 className="text-2xl font-bold mb-4 text-main">Contact Me</h2>
-      <p className="font-thin mt-[-15px] mb-10 text-[13px]">
+      <h2 className="text-4xl font-bold mb-4 text-main">Contact Me</h2>
+      <p className="font-thin mt-[-20px] mb-10 text-[13px]">
         I want to add my business
       </p>
       <form onSubmit={handleSubmit}>
