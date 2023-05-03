@@ -14,6 +14,9 @@ const LoginRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Add this line to log out any existing sessions
+    await Parse.User.logOut();
+
     try {
       let user = await Parse.User.logIn(number, password);
       const sessionToken = user.getSessionToken();
