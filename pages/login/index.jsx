@@ -9,6 +9,8 @@ const LoginRegister = () => {
   const [password, setPassword] = useState("");
   const [snackbar, setSnackbar] = useState({ open: false, message: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [step, setStep] = useState("enterNumber");
+  const [tempPassword, setTempPassword] = useState("");
 
   const router = useRouter();
 
@@ -16,45 +18,65 @@ const LoginRegister = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Add this line to log out any existing sessions
-    await Parse.User.logOut();
+    if (step === "enterNumber") {
+      const query = new Parse.Query(Parse.User);
+      query.equalTo("username", number);
+      const userExists = await query.first();
 
-    try {
-      let user = await Parse.User.logIn(number, password);
-      const sessionToken = user.getSessionToken();
-      user = await Parse.User.become(sessionToken);
-      console.log("User logged in:", user);
-      router.push("/home");
-    } catch (error) {
-      if (error.code === Parse.Error.OBJECT_NOT_FOUND) {
+      if (userExists) {
+        setStep("enterPassword");
+      } else {
         const newUser = new Parse.User();
+        const tempPassword =
+          "temp_password_" + Math.random().toString(36).substr(2, 9);
 
         newUser.set("username", number);
-        newUser.set("password", password);
+        newUser.set("password", tempPassword);
         newUser.set("phone", number);
 
         try {
-          await newUser.signUp();
-          console.log("User signed up:", newUser);
-          router.push("/home");
-        } catch (signUpError) {
-          console.error("Error signing up:", signUpError);
-          showSnackbar("Error signing up. Please try again.");
+          await newUser.save();
+          console.log("Number added:", newUser);
+          setTempPassword(tempPassword); // Set the tempPassword in state
+          setStep("choosePassword");
+        } catch (error) {
+          console.error("Error adding number:", error);
+          showSnackbar("Error adding number. Please try again.");
         }
-      } else if (
-        error.code === Parse.Error.USERNAME_MISSING ||
-        error.code === Parse.Error.PASSWORD_MISSING
-      ) {
-        showSnackbar("Number and password are required.");
-      } else if (error.code === Parse.Error.USERNAME_TAKEN) {
-        showSnackbar("This number is already in use.");
-      } else if (error.code === Parse.Error.INVALID_SESSION_TOKEN) {
-        showSnackbar("Invalid session. Please try again.");
-      } else {
+      }
+    } else if (step === "enterPassword") {
+      await Parse.User.logOut();
+
+      try {
+        let user = await Parse.User.logIn(number, password); // Use password from state instead of tempPassword
+        const sessionToken = user.getSessionToken();
+        user = await Parse.User.become(sessionToken);
+        console.log("User logged in:", user);
+        router.push("/home");
+      } catch (error) {
         console.error("Error logging in:", error);
         showSnackbar("Error logging in. Please try again.");
       }
+    } else if (step === "choosePassword") {
+      await Parse.User.logOut();
+
+      try {
+        let user = await Parse.User.logIn(number, tempPassword);
+        user.setPassword(password);
+        await user.save();
+
+        const sessionToken = user.getSessionToken();
+        user = await Parse.User.become(sessionToken);
+
+        console.log("Password set:", user);
+        router.push("/home");
+      } catch (error) {
+        console.error("Error setting password:", error);
+        showSnackbar("Error setting password. Please try again.");
+      }
     }
+
+    setIsLoading(false);
   };
 
   const showSnackbar = (message) => {
@@ -62,6 +84,49 @@ const LoginRegister = () => {
     setTimeout(() => {
       setSnackbar({ open: false, message: "" });
     }, 3000);
+  };
+
+  const renderInputField = () => {
+    if (step === "enterNumber") {
+      return (
+        <div className="mb-4">
+          <label htmlFor="number" className="block text-sm font-medium mb-2">
+            Number:
+          </label>
+          <input
+            id="number"
+            type="tel"
+            inputMode="numeric"
+            pattern="[0-9]{0,10}"
+            value={number}
+            onChange={(e) => {
+              const re = /^[0-9\b]+$/;
+              if (e.target.value === "" || re.test(e.target.value)) {
+                setNumber(e.target.value.slice(0, 10));
+              }
+            }}
+            className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
+            required
+          />
+        </div>
+      );
+    } else if (step === "enterPassword" || step === "choosePassword") {
+      return (
+        <div className="mb-4">
+          <label htmlFor="password" className="block text-sm font-medium mb-2">
+            {step === "enterPassword" ? "Enter Password:" : "Choose Password:"}
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
+            required
+          />
+        </div>
+      );
+    }
   };
 
   return (
@@ -83,42 +148,7 @@ const LoginRegister = () => {
           className="bg-white p-6 rounded shadow-md"
           style={{ width: "350px" }}
         >
-          <div className="mb-4">
-            <label htmlFor="number" className="block text-sm font-medium mb-2">
-              Number:
-            </label>
-            <input
-              id="number"
-              type="tel"
-              inputMode="numeric"
-              pattern="[0-9]{0,10}"
-              value={number}
-              onChange={(e) => {
-                const re = /^[0-9\b]+$/; // Regex to match only numbers and backspace key
-                if (e.target.value === "" || re.test(e.target.value)) {
-                  setNumber(e.target.value.slice(0, 10));
-                }
-              }}
-              className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium mb-2"
-            >
-              Password:
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary"
-            />
-          </div>
+          {renderInputField()}
           <button
             type="submit"
             className="bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded w-full flex items-center justify-center"
