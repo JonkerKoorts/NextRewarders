@@ -19,38 +19,32 @@ const LoginRegister = () => {
     setIsLoading(true);
 
     if (step === "enterNumber") {
-      const query = new Parse.Query(Parse.User);
-      query.equalTo("username", number);
-      const userExists = await query.first();
+      try {
+        // Log out any currently logged-in user
+        await Parse.User.logOut();
 
-      if (userExists) {
-        setStep("enterPassword");
-      } else {
-        const newUser = new Parse.User();
-        const tempPassword =
-          "temp_password_" + Math.random().toString(36).substr(2, 9);
+        const response = await Parse.Cloud.run("createNewUser", { number });
+        if (response.success) {
+          // Log in the user with the temporary password
+          const user = await Parse.User.logIn(number, response.tempPassword);
+          const sessionToken = user.getSessionToken();
+          localStorage.setItem("sessionToken", sessionToken);
 
-        newUser.set("username", number);
-        newUser.set("password", tempPassword);
-        newUser.set("phone", number);
-
-        try {
-          await newUser.save();
-          console.log("Number added:", newUser);
-          setTempPassword(tempPassword); // Set the tempPassword in state
+          setTempPassword(response.tempPassword);
           setStep("choosePassword");
-        } catch (error) {
-          console.error("Error adding number:", error);
-          showSnackbar("Error adding number. Please try again.");
+        } else {
+          setStep("enterPassword");
         }
+      } catch (error) {
+        console.error("Error adding number:", error);
+        showSnackbar("Error adding number. Please try again.");
       }
     } else if (step === "enterPassword") {
-      await Parse.User.logOut();
-
       try {
-        let user = await Parse.User.logIn(number, password); // Use password from state instead of tempPassword
+        const user = await Parse.User.logIn(number, password);
         const sessionToken = user.getSessionToken();
-        user = await Parse.User.become(sessionToken);
+        // set the session token in local storage
+        localStorage.setItem("sessionToken", sessionToken);
         console.log("User logged in:", user);
         router.push("/home");
       } catch (error) {
@@ -58,21 +52,28 @@ const LoginRegister = () => {
         showSnackbar("Error logging in. Please try again.");
       }
     } else if (step === "choosePassword") {
-      await Parse.User.logOut();
-
       try {
-        let user = await Parse.User.logIn(number, tempPassword);
-        user.setPassword(password);
-        await user.save();
+        const sessionToken = localStorage.getItem("sessionToken");
+        // make sure that the user is logged in before performing any actions
+        if (sessionToken) {
+          let user = await Parse.User.become(sessionToken);
+          user.setPassword(password);
+          await user.save();
 
-        const sessionToken = user.getSessionToken();
-        user = await Parse.User.become(sessionToken);
+          const newSessionToken = user.getSessionToken();
+          // set the new session token in local storage
+          localStorage.setItem("sessionToken", newSessionToken);
 
-        console.log("Password set:", user);
-        router.push("/home");
+          console.log("Password set:", user);
+          router.push("/home");
+        } else {
+          throw new Error("User is not logged in");
+        }
       } catch (error) {
         console.error("Error setting password:", error);
         showSnackbar("Error setting password. Please try again.");
+      } finally {
+        setIsLoading(false);
       }
     }
 
