@@ -1,12 +1,19 @@
-import Link from "next/link";
+
+import StoreTemplete from "@/components/StoreTemplete";
 import React from "react";
+
+
+
+
+
+
 
 const stoffelberg = () => {
   return (
-    <div>
-      <h1>stoffelberg</h1>
-      <Link href="/home">Back</Link>
-    </div>
+      <>
+      <StoreTemplete/>
+      
+      </>
   );
 };
 
