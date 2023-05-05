@@ -46,7 +46,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="bg-color-2 min-h-screen flex flex-col items-center justify-center p-6">
+    <div className="bg-color-2 min-h-screen flex flex-col items-center justify-start py-32 px-6">
       {isLoading && (
         <div className="w-16 h-16 border-t-2 border-b-2 border-main rounded-full animate-spin"></div>
       )}
@@ -77,7 +77,7 @@ const HomePage = () => {
             mass: 2,
             restDelta: 0.5,
           }}
-          className="bg-white p-6 rounded shadow-md w-full max-w-md"
+          className="bg-white p-6 rounded shadow-md w-full max-w-md mt-[55%]"
         >
           <div className="mb-4 text-sm font-medium">
             Please enter your name:
