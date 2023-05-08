@@ -24,6 +24,7 @@ const TheTeam = forwardRef((props, ref) => {
       </div>
       <div className="my-10 flex sm:flex-row flex-col justify-evenly gap-8 sm:gap-0">
         <div className="flex flex-col items-center sm:w-[33%] bg-white p-4 rounded-lg shadow-lg">
+
           <Image
             className="w-[20%] sm:w-[25%] rounded-full"
             src={strikingMan}
