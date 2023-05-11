@@ -19,5 +19,41 @@ const fetchStores = async () => {
   }
 };
 
-export { fetchStores };
+const fetchBeanJuiceMenu = async () => {
+  const BeanJuiceMenu = Parse.Object.extend("BeanJuiceMenu");
+  const query = new Parse.Query(BeanJuiceMenu);
+  try {
+    const results = await query.find();
+    return results.map((store) => store.toJSON());
+  } catch (error) {
+    console.error("Error while fetching stores: ", error);
+    return [];
+  }
+};
+
+const fetchStoffelbergMenu = async () => {
+  const StoffelbergMenu = Parse.Object.extend("StoffelbergMenu");
+  const query = new Parse.Query(StoffelbergMenu);
+  try {
+    const results = await query.find();
+    return results.map((store) => store.toJSON());
+  } catch (error) {
+    console.error("Error while fetching stores: ", error);
+    return [];
+  }
+};
+
+const fetchUsers = async () => {
+  const query = new Parse.Query(Parse.User);
+  try {
+    const results = await query.find();
+    return results.map((user) => user.toJSON());
+  } catch (error) {
+    console.error("Error while fetching users: ", error);
+    return [];
+  }
+};
+
+export { fetchStores, fetchBeanJuiceMenu, fetchStoffelbergMenu, fetchUsers };
+
 export default Parse;
