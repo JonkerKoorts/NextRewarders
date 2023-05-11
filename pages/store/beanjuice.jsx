@@ -1,15 +1,22 @@
-import Link from "next/link";
-import React from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import StoreTemplete from "@/components/StoreTemplete";
+import React, { useEffect, useState } from "react";
+import { fetchBeanJuiceMenu } from "@/utils/parse";
 
 const beanjuice = () => {
+  const [menuItems, setMenuItems] = useState([]);
+
+  useEffect(() => {
+    const FetchandSetMenuItems = async () => {
+      const fetchedMenuItems = await fetchBeanJuiceMenu();
+      setMenuItems(fetchedMenuItems);
+    };
+
+    FetchandSetMenuItems();
+  }, []);
   return (
     <>
-      <div>beanjuice</div>
-      <div className="text-4xl font-bold text-main">
-        I spoke to Jason {"(The owner of BEAN JUICE)"} yesterday and he said he
-        want all 5 his shops on this APP
-      </div>
-      <Link href="/home">Back</Link>
+      <StoreTemplete menuItems={menuItems} />
     </>
   );
 };
