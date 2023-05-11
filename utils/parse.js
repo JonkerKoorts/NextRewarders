@@ -43,5 +43,17 @@ const fetchStoffelbergMenu = async () => {
   }
 };
 
-export { fetchStores, fetchBeanJuiceMenu, fetchStoffelbergMenu };
+const fetchUsers = async () => {
+  const query = new Parse.Query(Parse.User);
+  try {
+    const results = await query.find();
+    return results.map((user) => user.toJSON());
+  } catch (error) {
+    console.error("Error while fetching users: ", error);
+    return [];
+  }
+};
+
+export { fetchStores, fetchBeanJuiceMenu, fetchStoffelbergMenu, fetchUsers };
+
 export default Parse;

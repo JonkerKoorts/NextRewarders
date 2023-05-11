@@ -17,7 +17,7 @@ const Hero = () => {
           <div className="mt-6">
             <Link
               href="/login"
-              className="bg-color-2 py-3 px-8 rounded-md hover:bg-main"
+              className="bg-color-3 py-3 px-8 rounded-md hover:bg-main"
             >
               Get Started
             </Link>

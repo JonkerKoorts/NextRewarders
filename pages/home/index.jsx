@@ -4,6 +4,7 @@ import Parse from "../../utils/parse.js";
 import { fetchStores } from "../../utils/parse.js";
 import { motion } from "framer-motion";
 import Stores from "@/components/stores.jsx";
+import Link from "next/link.js";
 
 const HomePage = () => {
   const [showNamePopup, setShowNamePopup] = useState(false);
@@ -11,6 +12,7 @@ const HomePage = () => {
   const [isNewUser, setIsNewUser] = useState(false);
   const [stores, setStores] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     const checkUserName = async () => {
@@ -23,6 +25,9 @@ const HomePage = () => {
           setShowNamePopup(true);
           setIsNewUser(true);
         }
+        // Assuming 'role' is a property of user
+        const userRole = user.get("roles");
+        setRole(userRole);
       }
     };
 
@@ -60,10 +65,21 @@ const HomePage = () => {
               {isNewUser ? "Welcome to Rewarders" : "Welcome back"}
             </p>
           </div>
-          <div className="mb-4 text-lg font-semibold">
-            {isNewUser ? "Browse Stores:" : "Stores:"}
-          </div>
-          <Stores stores={stores} />
+          {role === "user" && (
+            <div className="mb-4 text-lg font-semibold">
+              {isNewUser ? "Browse Stores:" : "Stores:"}
+            </div>
+          )}
+          {role === "user" && <Stores stores={stores} />}
+
+          {role === "admin" && (
+            <Link
+              href="/rewards"
+              className="bg-color-8 text-color-2 py-2 px-6 rounded-md hover:bg-main"
+            >
+              Give Rewards
+            </Link>
+          )}
         </>
       )}
       {showNamePopup && (
