@@ -93,7 +93,7 @@ const HomePage = () => {
             mass: 2,
             restDelta: 0.5,
           }}
-          className="bg-white p-6 rounded shadow-md w-full max-w-md mt-[55%]"
+          className="bg-white p-6 rounded shadow-md w-full max-w-md sm:mt-0 mt-[55%]"
         >
           <div className="mb-4 text-sm font-medium">
             Please enter your name:

@@ -36,8 +36,8 @@ const Rewards = () => {
     <div className="bg-color-2 min-h-screen flex flex-col items-center justify-start py-32 px-6">
       <h1 className="mb-4 text-xl font-bold text-center">Admin Rewards Page</h1>
       <input
-        type="text"
-        placeholder="Search for a user..."
+        type="tel"
+        placeholder="Search for number..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="w-full px-3 py-2 border border-main rounded focus:outline-none focus:border-secondary mb-4"
@@ -51,7 +51,7 @@ const Rewards = () => {
         (filteredUsers.length > 0 ? (
           <div
             onClick={() => handleUserSelect(filteredUsers[0])}
-            className="cursor-pointer bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded"
+            className="cursor-pointer bg-main hover:bg-secondary text-color-2 px-4 py-2 rounded my-5"
           >
             {filteredUsers[0].name}
           </div>
